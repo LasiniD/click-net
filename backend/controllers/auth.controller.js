@@ -95,3 +95,12 @@ export const logout = (req, res) => {
   res.clearCookie("jwt-clicknet");
   res.json({ message: "Logged out successfully" });
 };
+
+export const getCurrentUser = (req, res) => {
+  try {
+    res.json(req.user);
+  } catch (error) {
+    console.error("getCurrentUser error: ", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
