@@ -63,9 +63,35 @@ export const signup = async (req, res) => {
 };  
 
 export const login = async (req, res) => {
-  res.send("login");
+  try {
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
+    await res.cookie("jwt-clicknet", token, {
+      httpOnly: true,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    res.status(200).json({ message: "Logged in successfully" });
+  }catch (error) {
+    console.error("login error: ", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  };
 };
 
-export const logout = async (req, res) => {
-  res.send("logout");
+export const logout = (req, res) => {
+  res.clearCookie("jwt-clicknet");
+  res.json({ message: "Logged out successfully" });
 };
