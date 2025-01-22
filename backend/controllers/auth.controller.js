@@ -5,9 +5,9 @@ import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 
 export const signup = async (req, res) => {
   try {
-    const {fullname, username, email, password} = req.body;
+    const {name, username, email, password} = req.body;
 
-    if (!fullname || !username || !email || !password) {
+    if (!name || !username || !email || !password) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = new User({
-      fullname,
+      name,
       username,
       email,
       password: hashedPassword,
@@ -45,13 +45,13 @@ export const signup = async (req, res) => {
       secure: process.env.NODE_ENV === "production", // prevent man in the middle attacks
     });
 
-    return res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({ message: "User registered successfully" });
 
     //send welcome email
-    const profileUrl = CLIENT_URL+"/profile/"+user.username
+    const profileUrl = process.env.CLIENT_URL + "/profile/" + user.username;
 
     try {
-      await sendWelcomeEmail(user.email,user.fullname,profileUrl)
+      await sendWelcomeEmail(user.email,user.name,profileUrl)
     }catch(emailError){
       console.error("Error sending welcome Email",emailError)
     }

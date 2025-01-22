@@ -1,6 +1,7 @@
 import { mailtrapClient,sender } from "../lib/mailtrap.js"
+import { createWelcomeEmailTemplate } from "./emailTemplates.js"
 
-export const sendWelcomeEmail = async (email, fullname, profileUrl) => {
+export const sendWelcomeEmail = async (email, name, profileUrl) => {
     const recipient = [{email}]
 
     try {
@@ -8,7 +9,7 @@ export const sendWelcomeEmail = async (email, fullname, profileUrl) => {
             from: sender,
             to: recipient,
             subject: "Welcome to Clicknet",
-            html: createWelcomeEmailTemplate(fullname,profileUrl),
+            html: createWelcomeEmailTemplate(name,profileUrl),
             category: "welcome"
         });
         console.log("Welcome Email sent successfully",response);
