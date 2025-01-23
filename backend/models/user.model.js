@@ -21,8 +21,8 @@ const userSchema = new mongoose.Schema({
         youtube: {type: String},
         portfolio: {type: String},
     },
-    experience: [{title: String, location: String, startDate: Date, endDate: Date, bestPhoto: String, contactInfo : {phone: String, email: String}}],
-    qualifications: [{title: String, institution: String, fieldOfStudy: String, certificate: String}],
+    experience: [{title: String, location: String, startDate: Date, endDate: Date, contactInfo : {phone: String, email: String}}],
+    qualifications: [{title: String, institution: String, fieldOfStudy: String}],
     
     // For general users
     connections: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
