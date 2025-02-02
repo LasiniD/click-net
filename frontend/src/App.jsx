@@ -1,35 +1,45 @@
+import { Route, Routes } from 'react-router-dom';
+import Layout from './components/layout/Layout';
 
-import './index.css'
+import HomePage from './pages/HomePage';
+import SignUpPage from './pages/auth/SignUpPage';
+import LoginPage from './pages/auth/LoginPage';
+import { Toaster } from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
 
 function App() {
-  return <div>
-    <div class="w-full max-w-xs">
-      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-           Username
-        </label>
-        </div>
-        <div class="mb-6">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-            Password
-          </label>
-        <p class="text-red-500 text-xs italic">Please choose a password.</p>
-        </div>
-        <div class="flex items-center justify-between">
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-            Sign In
-          </button>
-      <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
-        Forgot Password?
-      </a>
-    </div>
-  </form>
-  <p class="text-center text-gray-500 text-xs">
-    &copy;2020 Acme Corp. All rights reserved.
-  </p>
-</div>
-  </div>
+
+  const { data: authUser } = useQuery({
+		queryKey: ["authUser"],
+		queryFn: async () => {
+			try {
+        console.log("Axios Base URL:", axiosInstance.defaults.baseURL);
+        console.log("Data being sent:", data);
+				const res = await axiosInstance.get("/auth/me");
+				return res.data;
+			} catch (err) {
+				if (err.response && err.response.status === 401) {
+					return null;
+				}
+				toast.error(err.response.data.message || "Something went wrong");
+			}
+		},
+	});
+
+  console.log("authUser", authUser);
+
+	//if (isLoading) return null;
+
+  return (
+  <Layout>
+    <Routes>
+      <Route path='/' element={<HomePage />} />
+      <Route path='/signup' element={<SignUpPage />} />
+      <Route path='/login' element={<LoginPage />} />
+    </Routes>
+    <Toaster />
+  </Layout>
+  );
 }
 
 export default App
