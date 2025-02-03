@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 
 import HomePage from './pages/HomePage';
@@ -6,15 +6,16 @@ import SignUpPage from './pages/auth/SignUpPage';
 import LoginPage from './pages/auth/LoginPage';
 import { Toaster } from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
+import { axiosInstance } from './lib/axios';
 
 function App() {
 
-  const { data: authUser } = useQuery({
+  const { data: authUser, isLoading } = useQuery({
 		queryKey: ["authUser"],
 		queryFn: async () => {
 			try {
-        console.log("Axios Base URL:", axiosInstance.defaults.baseURL);
-        console.log("Data being sent:", data);
+        //console.log("Axios Base URL:", axiosInstance.defaults.baseURL);
+        //console.log("Data being sent:", data);
 				const res = await axiosInstance.get("/auth/me");
 				return res.data;
 			} catch (err) {
@@ -28,14 +29,14 @@ function App() {
 
   console.log("authUser", authUser);
 
-	//if (isLoading) return null;
+	if (isLoading) return null;
 
   return (
   <Layout>
     <Routes>
-      <Route path='/' element={<HomePage />} />
-      <Route path='/signup' element={<SignUpPage />} />
-      <Route path='/login' element={<LoginPage />} />
+      <Route path='/' element={authUser ?<HomePage /> : <Navigate to={"/login"}/>} />
+      <Route path='/signup' element={!authUser ?<SignUpPage /> : <Navigate to={"/"}/>} />
+      <Route path='/login' element={!authUser ?<LoginPage /> : <Navigate to={"/"}/>} />
     </Routes>
     <Toaster />
   </Layout>
