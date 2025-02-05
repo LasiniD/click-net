@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
 import Sidebar from "../components/Sidebar";
 import PostCreation from "../components/PostCreation";
-//import Post from "../components/Post";
+import Post from "../components/Post";
 import { Users } from "lucide-react";
-//import RecommendedUser from "../components/RecommendedUser";
+import RecommendedUser from "../components/RecommendedUser";
 
 const HomePage = () => {
 	const { data: authUser } = useQuery({ queryKey: ["authUser"] });
@@ -39,7 +39,10 @@ const HomePage = () => {
 			<div className="col-span-1 lg:col-span-2 order-first lg:order-none">
 				<PostCreation user={authUser} />
 
-				
+				{/* Displaying Posts */}
+				{posts?.map((post) => (
+					<Post key={post._id} post={post} />
+				))}
 
 				{/* If there are no posts, show a message */}
 				{posts?.length === 0 && (
@@ -56,6 +59,18 @@ const HomePage = () => {
 
 			</div>
 
+			{/* Recommended Users Section */}
+			{recommendedUsers?.length > 0 && (
+				<div className="col-span-1 lg:col-span-1 hidden lg:block">
+					<div className="bg-white rounded-lg shadow-md p-4">
+						<h2 className="font-semibold mb-4 text-gray-800">People you may know</h2>
+						{recommendedUsers?.map((user) => (
+							<RecommendedUser key={user._id} user={user} />
+						))}
+					</div>
+				</div>
+			)}
+
 			
 		</div>
 	);
@@ -63,19 +78,5 @@ const HomePage = () => {
 
 export default HomePage;
 
-//{/* Displaying Posts */}
-//{posts?.map((post) => (
-//	<Post key={post._id} post={post} />
-//))}
 
-//{/* Recommended Users Section */}
-//{recommendedUsers?.length > 0 && (
-//	<div className="col-span-1 lg:col-span-1 hidden lg:block">
-//		<div className="bg-white rounded-lg shadow-md p-4">
-//			<h2 className="font-semibold mb-4 text-gray-800">People you may know</h2>
-//			{recommendedUsers?.map((user) => (
-//				<RecommendedUser key={user._id} user={user} />
-//			))}
-//		</div>
-//	</div>
-//)}
+
