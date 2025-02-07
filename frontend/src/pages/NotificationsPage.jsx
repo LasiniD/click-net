@@ -34,7 +34,7 @@ const NotificationsPage = () => {
 	const renderNotificationIcon = (type) => {
 		switch (type) {
 			case "like":
-				return <ThumbsUp className="text-blue-500" />;
+				return <ThumbsUp className="text-orange-500" />;
 			case "comment":
 				return <MessageSquare className="text-green-500" />;
 			case "connectionAccepted":
@@ -55,7 +55,7 @@ const NotificationsPage = () => {
 			case "comment":
 				return (
 					<span>
-						<Link to={`/profile/${notification.relatedUser.username}`} className="font-bold text-blue-600 hover:underline">
+						<Link to={`/profile/${notification.relatedUser.username}`} className="font-bold text-orange-600 hover:underline">
 							{notification.relatedUser.name}
 						</Link>{" "}
 						commented on your post
@@ -64,7 +64,7 @@ const NotificationsPage = () => {
 			case "connectionAccepted":
 				return (
 					<span>
-						<Link to={`/profile/${notification.relatedUser.username}`} className="font-bold text-blue-600 hover:underline">
+						<Link to={`/profile/${notification.relatedUser.username}`} className="font-bold text-orange-600 hover:underline">
 							{notification.relatedUser.name}
 						</Link>{" "}
 						accepted your connection request
@@ -113,7 +113,7 @@ const NotificationsPage = () => {
 								<li
 									key={notification._id}
 									className={`bg-white border rounded-lg p-4 my-4 transition-all hover:shadow-md ${
-										!notification.read ? "border-blue-500" : "border-gray-300"
+										!notification.read ? "border-orange-500" : "border-gray-300"
 									}`}
 								>
 									<div className="flex items-start justify-between">
@@ -146,7 +146,7 @@ const NotificationsPage = () => {
 											{!notification.read && (
 												<button
 													onClick={() => markAsReadMutation(notification._id)}
-													className="p-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200 transition-colors"
+													className="p-1 bg-orange-100 text-orange-600 rounded hover:bg-orange-200 transition-colors"
 													aria-label="Mark as read"
 												>
 													<Eye size={16} />

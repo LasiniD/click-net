@@ -109,7 +109,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 					{/* Save Button */}
 					<button
 						onClick={handleSave}
-						className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+						className="mt-4 bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 transition"
 					>
 						Save Changes
 					</button>
@@ -123,7 +123,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 					{userData.website && (
 						<p>
 							<strong className="text-gray-700">Website: </strong>
-							<a href={userData.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+							<a href={userData.website} target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">
 								{userData.website}
 							</a>
 						</p>
@@ -138,7 +138,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 									value ? (
 										<p key={key} className="text-gray-700">
 											<strong>{key.charAt(0).toUpperCase() + key.slice(1)}: </strong>
-											<a href={value} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+											<a href={value} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline">
 												{value}
 											</a>
 										</p>
@@ -152,7 +152,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 					{isOwnProfile && (
 						<button
 							onClick={() => setIsEditing(true)}
-							className="mt-4 text-blue-600 hover:underline"
+							className="mt-4 text-orange-600 hover:underline"
 						>
 							Edit
 						</button>

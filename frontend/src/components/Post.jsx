@@ -3,7 +3,7 @@ import { useState } from "react";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
-import { Loader, MessageCircle, Send, Share2, ThumbsUp, Trash2 } from "lucide-react";
+import { Loader, MessageCircle, Send, Eye, ThumbsUp, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 import PostAction from "./PostAction";
@@ -16,31 +16,53 @@ const Post = ({ post }) => {
 	const [newComment, setNewComment] = useState("");
 	const [comments, setComments] = useState(post.comments || []);
 
-	const isOwner = authUser._id === post.author._id;
-	const isLiked = post.likes.includes(authUser._id);
+	const isOwner = authUser?._id === post.author._id;
+	const isAdmin = authUser?.isAdmin;
+	const isLiked = post.likes.includes(authUser?._id);
 
 	const queryClient = useQueryClient();
+	
 
+	// Delete Post Mutation (Admin & Owner)
 	const { mutate: deletePost, isPending: isDeletingPost } = useMutation({
 		mutationFn: async () => {
 			await axiosInstance.delete(`/posts/delete/${post._id}`);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["posts"] });
-			toast.success("Post deleted successfully");
+			toast.success("Post and related comments deleted successfully");
 		},
 		onError: (error) => {
-			toast.error(error.message);
+			toast.error(error.message || "Failed to delete post");
+		},
+	});
+
+	
+
+	// Delete Comment Mutation (Admin & Owner)
+	const { mutate: deleteComment } = useMutation({
+		mutationFn: async (commentId) => {
+			await axiosInstance.delete(`/posts/${post._id}/comment/${commentId}`);
+		},
+		onSuccess: (_, commentId) => {
+			queryClient.invalidateQueries({ queryKey: ["comments"] });
+			setComments((prevComments) => prevComments.filter((c) => c._id !== commentId));
+			toast.success("Comment deleted successfully");
+			window.location.reload();
+		},
+		onError: (error) => {
+			toast.error(error.message || "Failed to delete comment");
 		},
 	});
 
 	const { mutate: createComment, isPending: isAddingComment } = useMutation({
-		mutationFn: async (newComment) => {
-			await axiosInstance.post(`/posts/${post._id}/comment`, { content: newComment });
+		mutationFn: async (commentContent) => {
+			await axiosInstance.post(`/posts/${post._id}/comment`, { content: commentContent });
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["posts"] });
+			queryClient.invalidateQueries({ queryKey: ["comments"] });
 			toast.success("Comment added successfully");
+			window.location.reload();
 		},
 		onError: (err) => {
 			toast.error(err.response.data.message || "Failed to add comment");
@@ -58,8 +80,14 @@ const Post = ({ post }) => {
 	});
 
 	const handleDeletePost = () => {
-		if (!window.confirm("Are you sure you want to delete this post?")) return;
+		if (!window.confirm("Are you sure you want to delete this post and all related comments?")) return;
 		deletePost();
+	};
+
+	const handleDeleteComment = (commentId, commentAuthorId) => {
+		if (!isAdmin && authUser?._id !== commentAuthorId) return; // Only admins or comment authors can delete
+		if (!window.confirm("Are you sure you want to delete this comment?")) return;
+		deleteComment(commentId);
 	};
 
 	const handleLikePost = async () => {
@@ -72,19 +100,8 @@ const Post = ({ post }) => {
 		if (newComment.trim()) {
 			createComment(newComment);
 			setNewComment("");
-			setComments([
-				...comments,
-				{
-					content: newComment,
-					user: {
-						_id: authUser._id,
-						name: authUser.name,
-						profilePicture: authUser.profilePicture,
-					},
-					createdAt: new Date(),
-				},
-			]);
 		}
+		window.location.reload();
 	};
 
 	return (
@@ -111,7 +128,7 @@ const Post = ({ post }) => {
 							</p>
 						</div>
 					</div>
-					{isOwner && (
+					{(isAdmin || isOwner) && (
 						<button onClick={handleDeletePost} className="text-red-500 hover:text-red-700">
 							{isDeletingPost ? <Loader size={18} className="animate-spin" /> : <Trash2 size={18} />}
 						</button>
@@ -125,7 +142,7 @@ const Post = ({ post }) => {
 				{/* Post Actions */}
 				<div className="flex justify-between text-gray-500">
 					<PostAction
-						icon={<ThumbsUp size={18} className={isLiked ? "text-blue-500  fill-blue-300" : ""} />}
+						icon={<ThumbsUp size={18} className={isLiked ? "text-orange-500  fill-orange-300" : ""} />}
 						text={`Like (${post.likes.length})`}
 						onClick={handleLikePost}
 					/>
@@ -135,7 +152,12 @@ const Post = ({ post }) => {
 						text={`Comment (${comments.length})`}
 						onClick={() => setShowComments(!showComments)}
 					/>
-					<PostAction icon={<Share2 size={18} />} text="Share" />
+
+					{/* View Post Button */}
+					<Link to={`/post/${post._id}`} className="flex items-center text-gray-500 hover:text-orange-600">
+						<Eye size={18} className="mr-1" />
+						View
+					</Link>
 				</div>
 			</div>
 
@@ -151,18 +173,27 @@ const Post = ({ post }) => {
 									className="w-8 h-8 rounded-full mr-2 flex-shrink-0"
 								/>
 								<div className="flex-grow">
-									<div className="flex items-center mb-1">
-										<span className="font-semibold mr-2">{comment.user.name}</span>
-										<span className="text-xs text-gray-500">
-											{formatDistanceToNow(new Date(comment.createdAt))}
-										</span>
+									<div className="flex items-center justify-between">
+										<div className="flex items-center">
+											<span className="font-semibold mr-2">{comment.user.name}</span>
+											<span className="text-xs text-gray-500">
+												{formatDistanceToNow(new Date(comment.createdAt))}
+											</span>
+										</div>
+										{(isAdmin || authUser?._id === comment.user._id) && (
+											<button
+												onClick={() => handleDeleteComment(comment._id, comment.user._id)}
+												className="text-red-500 hover:text-red-700"
+											>
+												<Trash2 size={16} />
+											</button>
+										)}
 									</div>
 									<p>{comment.content}</p>
 								</div>
 							</div>
 						))}
 					</div>
-
 					{/* Add Comment Input */}
 					<form onSubmit={handleAddComment} className="flex items-center">
 						<input
@@ -170,15 +201,15 @@ const Post = ({ post }) => {
 							value={newComment}
 							onChange={(e) => setNewComment(e.target.value)}
 							placeholder="Add a comment..."
-							className="flex-grow p-2 rounded-l-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className="flex-grow p-2 rounded-l-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
 						/>
-
+	
 						<button
 							type="submit"
-							className="bg-blue-600 text-white p-2 rounded-r-full hover:bg-blue-700 transition duration-300"
+							className="bg-orange-600 text-white p-2 rounded-r-full hover:bg-orange-700 transition duration-300"
 							disabled={isAddingComment}
 						>
-							{isAddingComment ? <Loader size={18} className="animate-spin" /> : <Send size={18} />}
+						{isAddingComment ? <Loader size={18} className="animate-spin" /> : <Send size={18} />}
 						</button>
 					</form>
 				</div>

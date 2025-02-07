@@ -48,7 +48,7 @@ const HomePage = () => {
 				{posts?.length === 0 && (
 					<div className="bg-white rounded-lg shadow-md p-8 text-center">
 						<div className="mb-6">
-							<Users size={64} className="mx-auto text-blue-500" />
+							<Users size={64} className="mx-auto text-orange-500" />
 						</div>
 						<h2 className="text-2xl font-bold mb-4 text-gray-800">No Posts Yet</h2>
 						<p className="text-gray-600 mb-6">

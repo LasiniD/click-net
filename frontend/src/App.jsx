@@ -41,7 +41,7 @@ function App() {
   <Layout>
     <Routes>
       <Route path='/admin' element={authUser?.isAdmin ?<AdminDashboard /> : <Navigate to={"/"}/>} />
-      <Route path='/' element={authUser ?<HomePage /> : <Navigate to={"/login"}/>} />
+      <Route path='/' element={authUser ? (authUser.isAdmin ? <Navigate to="/admin" /> : <HomePage />) : <Navigate to="/login" />}/>
       <Route path='/signup' element={!authUser ?<SignUpPage /> : <Navigate to={"/"}/>} />
       <Route path='/login' element={!authUser ?<LoginPage /> : <Navigate to={"/"}/>} />
       <Route path='/notifications' element={authUser ?<NotificationsPage /> : <Navigate to={"/login"}/>} />

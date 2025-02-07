@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
 
@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 const ProfilePage = () => {
 	const { username } = useParams();
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	const { data: authUser, isLoading } = useQuery({
 		queryKey: ["authUser"],
@@ -34,6 +35,21 @@ const ProfilePage = () => {
 		},
 	});
 
+	// Delete user mutation (only for admin)
+	const { mutate: deleteUser } = useMutation({
+		mutationFn: async () => {
+			await axiosInstance.delete(`/admin/users/${userProfile._id}`);
+		},
+		onSuccess: () => {
+			toast.success("User deleted successfully");
+			queryClient.invalidateQueries(["users"]); // Refresh user list
+			navigate("/"); // Redirect to home
+		},
+		onError: () => {
+			toast.error("Failed to delete user");
+		},
+	});
+
 	if (isLoading || isUserProfileLoading) {
 		return (
 			<div className="flex justify-center items-center h-screen">
@@ -43,6 +59,8 @@ const ProfilePage = () => {
 	}
 
 	const isOwnProfile = authUser?.username === userProfile?.username;
+	const isAdmin = authUser?.isAdmin;
+
 	const userData = isOwnProfile ? authUser : userProfile;
 
 	const handleSave = (updatedData) => {
@@ -51,10 +69,27 @@ const ProfilePage = () => {
 
 	return (
 		<div className="max-w-4xl mx-auto p-6 bg-gray-100 shadow-lg rounded-lg">
+			{/* Profile Sections */}
 			<ProfileHeader userData={userData} isOwnProfile={isOwnProfile} onSave={handleSave} />
 			<AboutSection userData={userData} isOwnProfile={isOwnProfile} onSave={handleSave} />
 			<ExperienceSection userData={userData} isOwnProfile={isOwnProfile} onSave={handleSave} />
 			<QualificationsSection userData={userData} isOwnProfile={isOwnProfile} onSave={handleSave} />
+
+			{/* Delete User Button (only visible to Admin, cannot delete themselves) */}
+			{isAdmin && !isOwnProfile && (
+				<div className="mt-6">
+					<button
+						onClick={() => {
+							if (window.confirm(`Are you sure you want to delete ${userProfile.name}?`)) {
+								deleteUser();
+							}
+						}}
+						className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition"
+					>
+						Delete User
+					</button>
+				</div>
+			)}
 		</div>
 	);
 };

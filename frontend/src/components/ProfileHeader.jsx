@@ -77,7 +77,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 				return (
 					<button
 						onClick={() => sendConnectionRequest(userData._id)}
-						className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center justify-center"
+						className="bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded-md flex items-center justify-center"
 					>
 						<UserPlus size={20} className="mr-2" />
 						Connect
@@ -196,7 +196,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 				{isOwnProfile ? (
 					<button
 						onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
-						className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-300"
+						className="mt-4 bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded-md transition duration-300"
 					>
 						{isEditing ? "Save Profile" : "Edit Profile"}
 					</button>

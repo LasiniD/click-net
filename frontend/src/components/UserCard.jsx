@@ -15,7 +15,7 @@ function UserCard({ user, isConnection }) {
 			<p className="text-sm text-gray-500 mt-2">{user.connections?.length} connections</p>
 
 			<button
-				className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors w-full"
+				className="mt-4 bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 transition-colors w-full"
 			>
 				{isConnection ? "Connected" : "Connect"}
 			</button>

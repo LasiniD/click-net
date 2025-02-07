@@ -43,7 +43,7 @@ const QualificationsSection = ({ userData, isOwnProfile, onSave }) => {
 				qualifications.map((qual, index) => (
 					<div key={index} className="mb-4 flex justify-between items-start border-b pb-4">
 						<div className="flex items-start">
-							<School size={20} className="mr-2 mt-1 text-blue-600" />
+							<School size={20} className="mr-2 mt-1 text-orange-600" />
 							<div>
 								<h3 className="font-semibold text-gray-900">{qual.title}</h3>
 								<p className="text-gray-600">{qual.institution}</p>
@@ -88,7 +88,7 @@ const QualificationsSection = ({ userData, isOwnProfile, onSave }) => {
 
 					<button
 						onClick={handleAddQualification}
-						className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+						className="bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 transition duration-300"
 					>
 						Add Qualification
 					</button>
@@ -101,14 +101,14 @@ const QualificationsSection = ({ userData, isOwnProfile, onSave }) => {
 					{isEditing ? (
 						<button
 							onClick={handleSave}
-							className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+							className="mt-4 bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 transition duration-300"
 						>
 							Save Changes
 						</button>
 					) : (
 						<button
 							onClick={() => setIsEditing(true)}
-							className="mt-4 text-blue-600 hover:underline transition duration-300"
+							className="mt-4 text-orange-600 hover:underline transition duration-300"
 						>
 							Edit Qualifications
 						</button>

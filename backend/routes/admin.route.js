@@ -18,7 +18,7 @@ router.delete('/users/:id', adminAuth, deleteUser);
 router.get('/posts', adminAuth, getPosts);
 router.delete('/posts/:id', adminAuth, deletePost);
 router.get('/comments', adminAuth, getComments);
-router.delete('/comments/:postId/:commentId', adminAuth, deleteComment);
+router.delete('/post/:postId/comment/:commentId', adminAuth, deleteComment);
 
 
 export default router;

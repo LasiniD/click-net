@@ -2,6 +2,7 @@ import Post from '../models/post.model.js';
 import cloudinary from '../lib/cloudinary.js';
 import Notification from '../models/notification.model.js';
 import { sendCommentNotificationEmail } from '../emails/emailHandlers.js';
+import { redirect } from 'react-router-dom';
 
 export const getFeedPosts = async (req, res) => {
     try {
@@ -172,3 +173,25 @@ export const likePost = async (req, res) => {
         res.status(500).json({message: "Internal server error"});
     }
 };
+
+export const deleteComment = async (req, res) => {
+    try {
+        const { postId, commentId } = req.params;
+
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        // Filter out the comment to be deleted
+        post.comments = post.comments.filter(comment => comment._id.toString() !== commentId);
+        await post.save();
+
+        res.status(200).json({ message: "Comment deleted successfully" });
+    } catch (error) {
+        console.log("Error in deleteComment:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+                  

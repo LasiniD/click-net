@@ -67,7 +67,7 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 			{experiences.map((exp, index) => (
 				<div key={index} className="mb-4 flex justify-between items-start border-b pb-4">
 					<div className="flex items-start">
-						<Briefcase size={20} className="mr-2 mt-1 text-blue-600" />
+						<Briefcase size={20} className="mr-2 mt-1 text-orange-600" />
 						<div>
 							<h3 className="font-semibold text-gray-900">{exp.title}</h3>
 							<p className="text-gray-600">{exp.location}</p>
@@ -151,7 +151,7 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 
 					<button
 						onClick={handleAddExperience}
-						className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+						className="bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 transition duration-300"
 					>
 						Add Experience
 					</button>
@@ -164,14 +164,14 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 					{isEditing ? (
 						<button
 							onClick={handleSave}
-							className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+							className="mt-4 bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 transition duration-300"
 						>
 							Save Changes
 						</button>
 					) : (
 						<button
 							onClick={() => setIsEditing(true)}
-							className="mt-4 text-blue-600 hover:underline transition duration-300"
+							className="mt-4 text-orange-600 hover:underline transition duration-300"
 						>
 							Edit Experiences
 						</button>

@@ -28,7 +28,7 @@ export default function Sidebar({ user }) {
 						<li>
 							<Link
 								to="/"
-								className="flex items-center py-2 px-4 rounded-md hover:bg-blue-600 hover:text-white transition-colors"
+								className="flex items-center py-2 px-4 rounded-md hover:bg-orange-600 hover:text-white transition-colors"
 							>
 								<Home className="mr-2" size={20} /> Home
 							</Link>
@@ -36,7 +36,7 @@ export default function Sidebar({ user }) {
 						<li>
 							<Link
 								to="/network"
-								className="flex items-center py-2 px-4 rounded-md hover:bg-blue-600 hover:text-white transition-colors"
+								className="flex items-center py-2 px-4 rounded-md hover:bg-orange-600 hover:text-white transition-colors"
 							>
 								<UserPlus className="mr-2" size={20} /> My Network
 							</Link>
@@ -44,7 +44,7 @@ export default function Sidebar({ user }) {
 						<li>
 							<Link
 								to="/notifications"
-								className="flex items-center py-2 px-4 rounded-md hover:bg-blue-600 hover:text-white transition-colors"
+								className="flex items-center py-2 px-4 rounded-md hover:bg-orange-600 hover:text-white transition-colors"
 							>
 								<Bell className="mr-2" size={20} /> Notifications
 							</Link>
@@ -53,7 +53,7 @@ export default function Sidebar({ user }) {
 				</nav>
 			</div>
 			<div className="border-t border-gray-300 p-4">
-				<Link to={`/profile/${user.username}`} className="text-sm font-semibold text-blue-600 hover:underline">
+				<Link to={`/profile/${user.username}`} className="text-sm font-semibold text-orange-600 hover:underline">
 					Visit your profile
 				</Link>
 			</div>

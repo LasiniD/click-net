@@ -84,7 +84,7 @@ const PostCreation = ({ user }) => {
 
 			<div className="flex justify-between items-center mt-4">
 				<div className="flex space-x-4">
-					<label className="flex items-center text-blue-500 hover:text-blue-700 transition-colors duration-200 cursor-pointer">
+					<label className="flex items-center text-orange-500 hover:text-orange-700 transition-colors duration-200 cursor-pointer">
 						<Image size={20} className="mr-2" />
 						<span>Photo</span>
 						<input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
@@ -92,7 +92,7 @@ const PostCreation = ({ user }) => {
 				</div>
 
 				<button
-					className="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+					className="bg-orange-600 text-white rounded-lg px-4 py-2 hover:bg-orange-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
 					onClick={handlePostCreation}
 					disabled={isPending}
 				>
