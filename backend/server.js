@@ -8,6 +8,7 @@ import userRoutes from "./routes/user.route.js";
 import postRoutes from "./routes/post.route.js";
 import notificationRoutes from "./routes/notification.route.js";
 import connectionRoutes from "./routes/connection.route.js";
+import adminRoutes from "./routes/admin.route.js";
 
 import { connectDB } from "./lib/db.js";
 
@@ -26,6 +27,7 @@ app.use(
 app.use(express.json({limit:"5mb"}));  //middleware to parse json data
 app.use(cookieParser());  //middleware to parse cookies
 
+app.use("/api/admin",adminRoutes);
 app.use("/api/auth",authRoutes); 
 app.use("/api/users",userRoutes); 
 app.use("/api/posts",postRoutes); 

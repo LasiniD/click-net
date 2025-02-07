@@ -8,6 +8,7 @@ import NotificationsPage from './pages/NotificationsPage';
 import NetoworkPage from './pages/NetworkPage';
 import PostPage from './pages/PostPage';
 import ProfilePage from './pages/ProfilePage';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 import { Toaster } from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
@@ -39,6 +40,7 @@ function App() {
   return (
   <Layout>
     <Routes>
+      <Route path='/admin' element={authUser?.isAdmin ?<AdminDashboard /> : <Navigate to={"/"}/>} />
       <Route path='/' element={authUser ?<HomePage /> : <Navigate to={"/login"}/>} />
       <Route path='/signup' element={!authUser ?<SignUpPage /> : <Navigate to={"/"}/>} />
       <Route path='/login' element={!authUser ?<LoginPage /> : <Navigate to={"/"}/>} />
