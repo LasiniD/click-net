@@ -7,7 +7,7 @@ import { redirect } from 'react-router-dom';
 export const getFeedPosts = async (req, res) => {
     try {
         const posts = await Post.find({author: {$in: [...req.user.connections, req.user._id]}})
-        .populate("author", "name username profilePic isPhotographer")
+        .populate("author", "name username profilePicture isPhotographer")
         .populate("comments.user", "name profilePic")
         .sort({createdAt: -1});
 
@@ -79,8 +79,8 @@ export const getPostById = async (req, res) => {
     try {
         const postId = req.params.id;
         const post = await Post.findById(postId)
-        .populate("author", "name username profilePic isPhotographer")
-        .populate("comments.user", "name username profilePic isPhotographer");
+        .populate("author", "name username profilePicture isPhotographer")
+        .populate("comments.user", "name username profilePicture isPhotographer");
 
         if (!post) {
             return res.status(404).json({message: "Post not found"});
@@ -104,7 +104,7 @@ export const createComment = async (req, res) => {
                 $push: {comments: {user: req.user._id, content} },
             },
             {new: true}
-            ).populate("author", "name email username profilePic isPhotographer");
+            ).populate("author", "name email username profilePicture isPhotographer");
         
         if (!post) {
             return res.status(404).json({message: "Post not found"});

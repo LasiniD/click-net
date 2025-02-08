@@ -65,18 +65,20 @@ const HomePage = () => {
 					<div className="bg-white rounded-lg shadow-md p-4">
 						<h2 className="font-semibold mb-4 text-gray-800">People you may know</h2>
 						{recommendedUsers
-							?.filter((user) => user.isAdmin)
+							?.filter((user) => Boolean(user.isAdmin) !== true)
 							.map((user) => (
 							<RecommendedUser key={user._id} user={user} />
 						))}
 					</div>
 				</div>
+				
 			)}
-
 			
 		</div>
 	);
 };
+
+
 
 export default HomePage;
 

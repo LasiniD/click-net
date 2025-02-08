@@ -114,7 +114,7 @@ const Post = ({ post }) => {
 							<img
 								src={post.author.profilePicture || "/avatar.png"}
 								alt={post.author.name}
-								className="w-10 h-10 rounded-full mr-3"
+								className="w-10 h-10 rounded-full mr-3 object-cover"
 							/>
 						</Link>
 
@@ -137,7 +137,7 @@ const Post = ({ post }) => {
 
 				{/* Post Content */}
 				<p className="mb-4">{post.content}</p>
-				{post.image && <img src={post.image} alt="Post content" className="rounded-lg w-full mb-4" />}
+				{post.image && <img src={post.image} alt="Post content" className="rounded-lg w-full mb-4 object-cover" />}
 
 				{/* Post Actions */}
 				<div className="flex justify-between text-gray-500">
@@ -170,7 +170,7 @@ const Post = ({ post }) => {
 								<img
 									src={comment.user.profilePicture || "/avatar.png"}
 									alt={comment.user.name}
-									className="w-8 h-8 rounded-full mr-2 flex-shrink-0"
+									className="w-8 h-8 rounded-full mr-2 flex-shrink-0 object-cover"
 								/>
 								<div className="flex-grow">
 									<div className="flex items-center justify-between">

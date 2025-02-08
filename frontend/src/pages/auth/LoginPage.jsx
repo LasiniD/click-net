@@ -5,7 +5,7 @@ const LoginPage = () => {
 	return (
 		<div className="min-h-screen flex flex-col justify-center py-12 px-6 lg:px-8 bg-gray-100">
 			<div className="mx-auto w-full max-w-md">
-				<img className="mx-auto h-40 w-auto" src="/logo3.png" alt="ClickNet" />
+				<img className="mx-auto h-40 w-auto object-cover" src="/logo3.png" alt="ClickNet" />
 				<h2 className="text-center text-3xl font-extrabold text-gray-900">
 					Sign in to your account
 				</h2> 

@@ -17,13 +17,15 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 
 	// Validation for Social Media Links
 	const socialLinkPatterns = {
-		facebook: /^https?:\/\/(www\.)?facebook\.com\/[\w.-]+\/?$/,
-		twitter: /^https?:\/\/(www\.)?twitter\.com\/[\w.-]+\/?$/,
-		instagram: /^https?:\/\/(www\.)?instagram\.com\/[\w.-]+\/?$/,
-		linkedin: /^https?:\/\/(www\.)?linkedin\.com\/in\/[\w.-]+\/?$/,
-		youtube: /^https?:\/\/(www\.)?youtube\.com\/channel\/[\w-]+\/?$/,
-		portfolio: /^https?:\/\/[\w.-]+(\.[a-z]{2,})+\/?.*$/,
+		facebook: /^https?:\/\//,
+		twitter: /^https?:\/\//,
+		instagram: /^https?:\/\//,
+		linkedin: /^https?:\/\//,
+		youtube: /^https?:\/\//,
+		portfolio: /^https?:\/\//,
 	};
+	
+	
 
 	// Handle Input Change
 	const handleChange = (e) => {

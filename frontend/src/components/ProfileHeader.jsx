@@ -129,7 +129,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 				{/* Profile Image */}
 				<div className="relative -mt-20 mb-4">
 					<img
-						className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-md"
+						className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-md object-cover"
 						src={editedData.profilePicture || userData.profilePicture || "/avatar.png"}
 						alt={userData.name}
 					/>

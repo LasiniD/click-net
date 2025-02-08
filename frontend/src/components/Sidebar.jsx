@@ -15,7 +15,7 @@ export default function Sidebar({ user }) {
 					<img
 						src={user.profilePicture || "/avatar.png"}
 						alt={user.name}
-						className="w-20 h-20 rounded-full mx-auto mt-[-40px] border-4 border-white shadow-md"
+						className="w-20 h-20 rounded-full mx-auto mt-[-40px] border-4 border-white shadow-md object-cover"
 					/>
 					<h2 className="text-xl font-semibold mt-2 text-gray-900">{user.name}</h2>
 				</Link>
