@@ -35,7 +35,7 @@ const Navbar = () => {
 				<div className="flex justify-between items-center py-3">
 					<div className="flex items-center space-x-4">
 						<Link to="/">
-							<img className="h-8 rounded" src="/small-logo.png" alt="ClickNet" />
+							<img className="h-8 rounded" src="/small-logo-white-transparent.png" alt="ClickNet" />
 						</Link>
 					</div>
 					<div className="flex items-center gap-4 md:gap-6">

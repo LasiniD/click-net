@@ -1,6 +1,9 @@
 import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
 
+import Notification from "../models/notification.model.js";
+import ConnectionRequest from "../models/connectionRequest.model.js";
+
 export const getStats = async (req, res) => {
     try {
         const userCount = await User.countDocuments();
@@ -28,17 +31,37 @@ export const getUsers = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        const userId = req.params.id;
+
+        const user = await User.findByIdAndDelete(userId);
 
         if (!user) {
-            return res.status(404).json({message: "User not found"});
+            return res.status(404).json({ message: "User not found" });
         }
 
-        res.status(200).json({message: "User deleted successfully", user});
+        await Post.deleteMany({ author: userId });
+
+        await Notification.deleteMany({ 
+            $or: [
+                { recipient: userId }, 
+                { relatedUser: userId }
+            ]
+        });
+
+        await ConnectionRequest.deleteMany({ 
+            $or: [
+                { sender: userId }, 
+                { recipient: userId }
+            ]
+        });
+
+        res.status(200).json({ message: "User and related data deleted successfully", user });
     } catch (error) {
-        res.status(500).json({message:"Error deleting user",error});
+        console.error("Error deleting user:", error);
+        res.status(500).json({ message: "Error deleting user and related data", error });
     }
 };
+
 
 export const getPosts = async (req, res) => {
     try {
@@ -58,6 +81,12 @@ export const deletePost = async (req, res) => {
         if (!post) {
             return res.status(404).json({message: "Post not found"});
         }
+
+        await Notification.deleteMany({ 
+            $or: [
+                { relatedPost: post._id },
+            ]
+        });
 
         res.status(200).json({message: "Post deleted successfully"});
     } catch (error) {

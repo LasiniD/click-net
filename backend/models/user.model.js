@@ -8,8 +8,8 @@ const userSchema = new mongoose.Schema({
     profilePicture: {type: String, default: ""},
     coverPhoto: {type: String, default: ""},
     isPhotographer: {type: Boolean, default: false},
+    isAdmin: {type: Boolean, default: false},
 
-    // For photographers
     bio: {type: String, maxlength: 500},
     location: {type: String},
     website: {type: String},
@@ -24,7 +24,6 @@ const userSchema = new mongoose.Schema({
     experience: [{title: String, location: String, startDate: Date, endDate: Date, contactInfo : {phone: String, email: String}}],
     qualifications: [{title: String, institution: String, fieldOfStudy: String}],
     
-    // For general users
     connections: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
 
 },{timestamp: true});
